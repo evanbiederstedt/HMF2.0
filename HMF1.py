@@ -188,6 +188,24 @@ os.getcwd()
 ## LRGs are extremely luminous, so perfect for LSS to probe volume of Universe via spatial clustering.
 ##
 
+###
+### SDSS WAVELENGTH CALIBRATION
+### The spectroscopic wavelength calibration is done quite accurately in SDSS and BOSS, with typical errors of 2
+### km s-1 or better. The wavelength calibration is established using arc calibration frames taken at altitude
+### immediately before or after each contiguous sequence of science observations. Low-order adjustments to correct
+### for flexure over the course of the observation sequence are made based on the positions of night-sky emission
+### lines in each individual exposure.
+###
+### SDSS USUAL METHOD FOR REDSHIFT AND CLASSIFICATION TEMPLATES
+### http://www.sdss.org/dr12/algorithms/redshifts/
+### Redshift and classification templates for galaxy, quasar, and CV star classes are constructed by performing a
+### rest-frame principal-component analysis (PCA) of training samples of known redshift. The leading
+### “eigenspectra” from the PCA results are used to define a linear template basis that is used to model the
+### spectra in the redshift analysis.
+###
+###
+###
+
 from rpy2 import *
 import rpy2.robjects as robjects
 
