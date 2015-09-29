@@ -25,7 +25,9 @@ For succinct summary of HMF applied to search of massive BHBs in galxies and qua
 3) Repeat the fitting using two sets of components at different redshifts, the first z_SDSS, the second free to vary over a broad range of z, corresponding to velocity differences up to 30 000 km s^−1
 
 ========
-#####Why does PCA fall short? From Vaderplas, Connolly 2009; http://arxiv.org/pdf/0907.2238.pdf
+#####Why does PCA fall short? 
+
+From Vaderplas, Connolly 2009; http://arxiv.org/pdf/0907.2238.pdf
 
 "[PCA] cannot easily (nor compactly) express inherently non-linear relations within the data (such as dust
 obscuration or the variation in spectral line widths). Spectra that have a broad range in
