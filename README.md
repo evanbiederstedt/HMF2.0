@@ -12,3 +12,5 @@ Formalism: there are K components g_{jk} and coefficients a_{ik}, over all the N
 [K,M] parameters g_{kj} in basis spectra
 [N,M] data
 where K is the manually set complexity parameter. 
+
+For succinct summary of HMF, see Section 2 in the paper: http://arxiv.org/pdf/1106.1180.pdf
