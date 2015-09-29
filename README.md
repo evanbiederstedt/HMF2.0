@@ -15,6 +15,8 @@ where K is the manually set complexity parameter.
 
 For succinct summary of HMF applied to search of massive BHBs in galxies and quasars, see Section 2 in the paper: http://arxiv.org/pdf/1106.1180.pdf
 
+=======
+
 ##### Steps:
 1) Use a subset of data at rest-frame wavelengths as a training set to define the set of basis functions that minimize chi-squared
 
