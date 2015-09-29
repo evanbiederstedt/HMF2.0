@@ -14,3 +14,8 @@ Formalism: there are K components g_{jk} and coefficients a_{ik}, over all the N
 where K is the manually set complexity parameter. 
 
 For succinct summary of HMF applied to search of massive BHBs in galxies and quasars, see Section 2 in the paper: http://arxiv.org/pdf/1106.1180.pdf
+
+Steps:
+1) Use a subset of data at rest-frame wavelengths as a training set to define the set of basis functions that minimize chi-squared
+2) Use the resulting set of components to fit each observed spectrum at the redshift provided by SDSS, z_SDSS
+3) Repeat the fitting using two sets of components at different redshifts, the first z_SDSS, the second free to vary over a broad range of z, corresponding to velocity differences up to 30 000 km s^−1
