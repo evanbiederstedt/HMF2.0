@@ -37,3 +37,11 @@ line-widths require a large number of eignespectra to capture their intrinsic va
 often results in the continuum emission and emission lines being treated independently
 (Gy¨ory et al. 2008)." 
 
+=========
+For other papers, see:
+
+-Blaton, Roweis 2007: arXiv:astro-ph/0606170
+Use NMF to generate template spectra from noisy and missing data
+
+-Bailey, 2012, arXiv:1208.4122
+Implement PCA with EM
