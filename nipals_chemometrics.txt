@@ -1,0 +1,38 @@
+From the R package "chemometrics" by Peter Filzmoser (TU Wien)
+http://www.statistik.tuwien.ac.at/public/filz/
+
+> nipals
+function (X, a, it = 10, tol = 1e-04) 
+{
+    Xh <- scale(X, center = TRUE, scale = FALSE)
+    nr <- 0
+    T <- NULL
+    P <- NULL
+    for (h in 1:a) {
+        th <- Xh[, 1]
+        ende <- FALSE
+        while (!ende) {
+            nr <- nr + 1
+            ph <- t((t(th) %*% Xh) * as.vector(1/(t(th) %*% th)))
+            ph <- ph * as.vector(1/sqrt(t(ph) %*% ph))
+            thnew <- t(t(ph) %*% t(Xh) * as.vector(1/(t(ph) %*% 
+                ph)))
+            prec <- t(th - thnew) %*% (th - thnew)
+            cat("actual precision: ", sqrt(prec), "\n")
+            th <- thnew
+            if (prec <= (tol^2)) {
+                ende <- TRUE
+            }
+            else if (it <= nr) {
+                ende <- TRUE
+                cat("\nWARNING! Iteration stop in h=", h, " without convergence!\n\n")
+            }
+        }
+        Xh <- Xh - (th %*% t(ph))
+        T <- cbind(T, th)
+        P <- cbind(P, ph)
+        nr <- 0
+    }
+    list(T = T, P = P)
+}
+<environment: namespace:chemometrics>
