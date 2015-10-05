@@ -13,9 +13,26 @@
 # and if K is too large, the model over-fits the training set and does worse on the test set.
 #
 #
-# Recall PCA decomposition of matrix X such that X = \Sum^{q}_{h=1} t_h (p_h).T
-# t denotes principal components: t_1, t_2, ..., t_h, rows
-# p denotes principal axes:       p_1, p_2, ..., p_h, columns
+# Recall PCA decomposition of matrix X such that X = \Sum^{q}_{h=1} t_h * (p_h).T
+# t denotes principal components: t_1, t_2, ..., t_q, rows
+# p denotes principal axes:       p_1, p_2, ..., p_q, columns
+#
+# NIPALS
+# (Notation from http://gastonsanchez.com/plsdepot_nipals.pdf)
+# We get desired PCA decomposition by applying iterative algorithm based on simple LS regressions
+#
+# Mean-centered vector X_i
+# X_{ij} = X_{ij} _ \bar{X}_i
+#
+# 1. X_0 =  X
+# 2. For h = 1, 2, ..., q
+#    (a) t_h = first column of X_{h-1}
+#    (b) repeat unitl convergence of p_h
+#        (i)   p_h = X'_{h-1} * t_{h} / t'_{h} * t_{h}  !!! This is LS regression
+#        (ii)  Normalize p_h to 1
+#        (iii) t_h = X_{h-1} * p_{h} / p'_{h} * p_{h}
+# 3. X_{h} = X_{h-1} - t_{h} * p'_{h}
+#
 #
 #
 import numpy as np
@@ -60,14 +77,3 @@ def nipals_pca(data, Kcomps = None, conv=1e-8, max_it=100000):
         D = np.matrix(np.outer(p, t), copy=False)
     X = X - D
 return eigenvec
-
-
-# Also include funtion to calculate PCA via numpy SVD
-def svd_pca(data):
-    # Factors the matrix M as U*np.diag(S)*V,
-    # where U, V are unitary and S is a 1-D array of M‘s singular values
-    U, S, eigenvec = np.linalg.svd(data)
-    eigenval = S ** 2. / (data.shape[0] - 1.)
-    return eigenvec, eigenval
-
-
