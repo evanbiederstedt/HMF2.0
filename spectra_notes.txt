@@ -54,7 +54,7 @@ print len(mask)
 from matplotlib import pyplot as plt
 ax = plt.axes()
 coeff0 = file1[0].header['COEFF0']
-# coeff0 is the center wavelength (log10) of first pi
+# coeff0 is the center wavelength (log10) of first pixel
 coeff1 = file1[0].header['COEFF1']
 # coeff1 is the log10 dispersion per pixel 
 print coeff0 # OUTPUT 3.5793
