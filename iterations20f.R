@@ -1,35 +1,71 @@
 ## Copyright 2010 Paraskevi Tsalmantza & David W. Hogg.
 ## All rights reserved.
 
+setwd("/Users/evanbiederstedt/desktop/Tsalmantza_Routines")
+
 nonnegative<-FALSE
 print("loading...")
 load("spectra.Rdata")
 load("noise.Rdata")
 load("mask.Rdata")
 load("lamda_tel.Rdata")
-N<-nrow(spectra)
-M<-length(lamda_tel)
+N<-nrow(spectra)      # nrow(spectra) = 5000
+M<-length(lamda_tel)  # length(lamda_tel) = 4056
 
 source("functions.R")
 
+# length(mask) = 20280000
+# str(mask) = [1:5000, 1:4056]
+# nrow(mask) = 5000
+# ncol(mask) = 4056
+#
+# Each of the N observe spectra i can be considered a column vector
+# on a grid of M observer-frame wavelengths j
+# HUGE MATRIX!
+# f_{ij} i = N spectra, j = M wavelengths
+# i.e. n_{ij} is the noise in pixel j of spectrum i
+#
 ## Check which spectra have the whole spectrum at the beggining and at the end
-all_blue<-which(mask[,1]==0)
-all_red<-which(mask[,ncol(mask)]==0)
-all_br<-union(all_blue,all_red)
+all_blue<-which(mask[,1]==0)          # "which first column of mask equals 0" GIVES INDICES of MASK == 0 IN FIRST COLUMN
+all_red<-which(mask[,ncol(mask)]==0)  # "which columns of mask equal 0" GIVES INDICES of MASK == 0 in LAST COLUMN
+all_br<-union(all_blue,all_red)       # str(all_br) = int [1:24] 337 1127 1203 1500 1803 2790 3922 ...
 
+#
+# all_br =  263  909  973 1213 1451 2262 3188 3446 3740 4015 4048  312  579  704 1168
+#                1403 1485 1550 2306 2423 3838 3906 3946 4009
+#
 set.seed(8)
-index<-sample(setdiff(c(1:N),all_br),(N-M))
+# N is nrow(spectra) = 5000
+# M is length(lamda_tel) = 4056
+# N-M is 944
+index<-sample(setdiff(c(1:N),all_br),(N-M)) # length(index) = 944, str(index) = int [1:944] 2333 1038 3994 3257 1607 3589 1453
 
-spectra1<-spectra[-index,]
-spectrat<-spectra[index,]
-spectra<-spectra1
-noise1<-noise[-index,]
-noiset<-noise[index,]
-noise<-noise1
+#
+# setdiff(c(1:N), all_br)) --- all all_br subtracted , "set difference" from union
+#
+# sample takes a sample of the specified size from the elements of x using either with or without replacement.
+# sample(x, size, replace = FALSE, prob = NULL)
+#
+# sample size = 944
+#
+#
+#
+# ARRAY1  = 'SPECTRUM'                      / units of (10^-17 erg/s/cm^2/A
+# ARRAY2  = 'CONTINUUM-SUBTRACTED SPECTRUM' / units of 10^-17 erg/s/cm^2/A
+# ARRAY3  = 'ERROR   '                      / units of 10^-17 erg/s/cm^2/A
+# ARRAY4  = 'MASK    '                      / mask bit array
+#
+
+spectra1<-spectra[-index,]   # str(spectra1) = num [1:4056, 1:4056] 1.37e-15 1.70e-16 1.06e-16 1.94e-17 ...
+spectrat<-spectra[index,]    # str(spectrat) = num [1:944, 1:4056] 3.27e-17 7.19e-17 1.03e-16 5.47e-17 ...
+spectra<-spectra1            # str(spectra) =  num [1:4056, 1:4056] 1.37e-15 1.70e-16 1.06e-16 1.94e-17 ...
+noise1<-noise[-index,]       # str(noise1) = num [1:4056, 1:4056] 1e-12 1e-12 1e-12 1e-12 ...
+noiset<-noise[index,]        # str(noiset) = num [1:944, 1:4056] 1e-12 1e-12 1e-12 1e-12 ...
+noise<-noise1                # str(noise) = num [1:4056, 1:4056] 1e-12 1e-12 1e-12 1e-12 ...
 noise<-abs(noise) # should be a no-op
-mask1<-mask[-index,]
-maskt<-mask[index,]
-mask<-mask1
+mask1<-mask[-index,]         # str(mask1) = num [1:4056, 1:4056] 1 1 1 1 1 ...
+maskt<-mask[index,]          # str(maskt) = num [1:944, 1:4056] 1 1 1 1 1 ...
+mask<-mask1                  # str(mask) = num [1:4056, 1:4056] 1 1 1 1 1 ...
 
 all_blue<-which(mask[,1]==0)
 all_red<-which(mask[,ncol(mask)]==0)
@@ -37,9 +73,9 @@ all_br<-union(all_blue,all_red)
 
 ## Keep the the above spectra and the 200 first ones (because this is a test)
 #M<-100
-spectra200<-as.data.frame(spectra[union(all_br,1:1000),1:M])
-noise200<-as.data.frame(noise[union(all_br,1:1000),1:M])
-N<-nrow(spectra200)
+spectra200<-as.data.frame(spectra[union(all_br,1:1000),1:M]) # num [1:1018, 1:4056]
+noise200<-as.data.frame(noise[union(all_br,1:1000),1:M])     # 'data.frame':	1018 obs. of  4056 variables:
+N<-nrow(spectra200)                                          # nrow(spectra200) = 1018
 
 if (nonnegative){
 print("making the data non-negative...")
@@ -52,11 +88,11 @@ spectra200[negativedata]<-0
 spectra200<-as.matrix(spectra200)
 invvar200<-as.matrix(1.0/noise200^2)
 
-Kminus1list<-c(1:15)
-epsilonlist<-c(30.,10.,3.,1.)
-nK<-length(Kminus1list)
-nepsilon<-length(epsilonlist)
-xit<-matrix(0.,nepsilon,nK)
+Kminus1list<-c(1:15)              # 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+epsilonlist<-c(30.,10.,3.,1.)     # 30 10  3  1
+nK<-length(Kminus1list)           # 15
+nepsilon<-length(epsilonlist)     # 4
+xit<-matrix(0.,nepsilon,nK)       # str(xit) = num [1:4, 1:15] 0 0 0 0 0 0 0 0 0 0 ...
 Kindex<-0
 for (Kminus1 in Kminus1list) {
 Kindex<-Kindex+1
