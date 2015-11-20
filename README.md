@@ -37,6 +37,11 @@ line-widths require a large number of eignespectra to capture their intrinsic va
 often results in the continuum emission and emission lines being treated independently
 (Gy¨ory et al. 2008)." 
 
+=======
+Their limitation has been that they assume that
+the spectral coverage and quality of the spectra are constant for all galaxies
+within a given sample
+
 =========
 For other papers, see:
 
@@ -45,3 +50,7 @@ Use NMF to generate template spectra from noisy and missing data
 
 -Bailey, 2012, arXiv:1208.4122
 Implement PCA with EM
+
+-Connolly, Szalay, 1999: astro-ph/9901300v1
+
+-Delchambre, 2014: arXiv:1412.4533v1
